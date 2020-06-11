@@ -1,6 +1,7 @@
 package com.bracongo.callcenter.service;
 
 import com.bracongo.callcenter.entities.Commande;
+import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -15,5 +16,7 @@ public interface IcommandeService {
     public Commande getCommandeById(Long id);
     
     public void deleteCommande(Long id);
+    
+    public List<Commande> getAllCommandes();
     
 }

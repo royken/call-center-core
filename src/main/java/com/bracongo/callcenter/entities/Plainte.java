@@ -41,6 +41,9 @@ public class Plainte implements Serializable{
     @Column(name = "DESCRIPTION")
     private String description;
     
+    @Column(name = "CLIENT")
+    private String client;
+    
     @ManyToOne
     @JoinColumn(name = "PLAINTE")
     private Utilisateur utilisateur;
