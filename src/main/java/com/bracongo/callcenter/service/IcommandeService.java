@@ -1,6 +1,7 @@
 package com.bracongo.callcenter.service;
 
 import com.bracongo.callcenter.entities.Commande;
+import com.bracongo.callcenter.entities.dto.CommandeDto;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface IcommandeService {
     
-    public Commande saveOrUpdateCommande(Commande commande);
+    public Commande saveCommande(CommandeDto commande);
     
     public Commande getCommandeById(Long id);
     
