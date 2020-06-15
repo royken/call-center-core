@@ -39,6 +39,12 @@ public class CommandeDto implements Serializable{
     public void setUsername(String username) {
         this.username = username;
     }
+
+    @Override
+    public String toString() {
+        return "CommandeDto{" + "client=" + client + ", items=" + items + ", username=" + username + '}';
+    }
+    
     
     
     

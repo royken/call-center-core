@@ -35,6 +35,7 @@ public class CommandeServiceImpl implements IcommandeService {
     public Commande saveCommande(CommandeDto commande) {
         Utilisateur u = utilisateurRepository.findByUsername(commande.getUsername().trim());
         if (u != null) {
+            System.out.println(commande);
             Commande commande_ = new Commande();
             commande_.setClient(commande.getClient());
             commande_.setDateCommande(new Date());
@@ -46,8 +47,8 @@ public class CommandeServiceImpl implements IcommandeService {
                 item.setCommande(commande_);
                 commandeItemRepository.save(item);
             }
-            commande_.setClient(null);
-            commande_.setCommandeItems(null);
+           // commande_.setClient(null);
+           // commande_.setCommandeItems(null);
             return commande_;
         }
         return null;

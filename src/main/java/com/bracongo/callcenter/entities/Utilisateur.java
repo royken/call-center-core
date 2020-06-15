@@ -53,6 +53,11 @@ public class Utilisateur implements Serializable {
     public Utilisateur() {
     }
 
+    @Override
+    public String toString() {
+        return "Utilisateur{" + "id=" + id + ", nom=" + nom + ", username=" + username + ", password=" + password + ", actif=" + actif + ", role=" + role + '}';
+    }
+
     
     
 }

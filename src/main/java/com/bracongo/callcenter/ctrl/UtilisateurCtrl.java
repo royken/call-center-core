@@ -53,9 +53,10 @@ public class UtilisateurCtrl {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
             Utilisateur u = utilisateurRepository.findByUsername(username);
             String token = jwtTokenProvider.createToken(username, u.getRole());
-            LoginResponse response = new LoginResponse(username, token);
-            response.setStatus(true);
+            LoginResponse response = new LoginResponse(username, token,u.getRole(),true, u.getNom());
+            /*response.setStatus(true);
             response.setRole(u.getRole());
+            response.setNom(u.getNom());*/
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (AuthenticationException e) {
             LoginResponse response = new LoginResponse(null, null);

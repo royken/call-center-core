@@ -36,6 +36,7 @@ public class PlainteServiceImpl implements IPlainteService{
             p.setDescription(plainteDto.getDescription());
             p.setTypePlainte(plainteDto.getTypePlainte());
             p.setStatut("");
+            p.setClient(plainteDto.getClient());
             return plainteRepository.save(p);
         }
         return null;

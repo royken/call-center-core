@@ -45,7 +45,7 @@ public class Plainte implements Serializable{
     private String client;
     
     @ManyToOne
-    @JoinColumn(name = "PLAINTE")
+    @JoinColumn(name = "UTILISATEUR")
     private Utilisateur utilisateur;
 
     public Plainte() {

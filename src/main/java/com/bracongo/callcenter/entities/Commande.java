@@ -37,14 +37,14 @@ public class Commande implements Serializable{
     @OneToMany(mappedBy = "commande")
     private List<CommandeItem> commandeItems;
     
-    @JoinColumn(name = "CLIENT")
+    @Column(name = "CLIENT")
     private String client;
     
     @Column(name = "STATUT")
     private String statut;
     
     @ManyToOne
-    @JoinColumn(name = "COMMANDE")
+    @JoinColumn(name = "UTILISATEUR")
     private Utilisateur utilisateur;
 
     public Commande() {

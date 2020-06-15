@@ -17,6 +17,18 @@ public class LoginResponse implements Serializable{
     private String tokenType = "Bearer";
     
     private boolean status;
+    
+    private String nom;
+
+    public LoginResponse(String username, String accessToken, String role, boolean status, String nom) {
+        this.username = username;
+        this.accessToken = accessToken;
+        this.role = role;
+        this.status = status;
+        this.nom = nom;
+    }
+    
+    
 
     public LoginResponse(String username, String accessToken) {
         this.username = username;
@@ -64,6 +76,14 @@ public class LoginResponse implements Serializable{
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
     }
     
     
