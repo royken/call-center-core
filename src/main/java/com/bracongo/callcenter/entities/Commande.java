@@ -48,6 +48,10 @@ public class Commande implements Serializable{
     @ManyToOne
     @JoinColumn(name = "UTILISATEUR")
     private Utilisateur utilisateur;
+    
+    @ManyToOne
+    @JoinColumn(name = "TICKET")
+    private Ticket ticket;
 
     public Commande() {
     }
