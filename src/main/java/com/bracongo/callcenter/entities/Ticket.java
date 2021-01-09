@@ -43,6 +43,7 @@ public class Ticket implements Serializable{
     
     @ManyToOne
     @JoinColumn(name = "UTILISATEUR")
+    @JsonIgnore
     private Utilisateur utilisateur;
     
     @Column(name = "DATE_TICKET")
@@ -52,7 +53,7 @@ public class Ticket implements Serializable{
     @Column(name = "ID_APPELENT")
     private String idAppelant;
     
-    @OneToMany(mappedBy = "ticke")
+    @OneToMany(mappedBy = "ticket")
     @JsonIgnore
     private List<Plainte> plaintes;
     

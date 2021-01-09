@@ -1,5 +1,6 @@
 package com.bracongo.callcenter.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,6 +24,7 @@ public class CommandeItem implements Serializable {
     
     @ManyToOne
     @JoinColumn(name = "COMMANDE")
+    @JsonIgnore
     private Commande commande;
     
     @Id
@@ -38,7 +40,17 @@ public class CommandeItem implements Serializable {
     
     @Column(name = "CODE_PRODUIT")
     private String codeProduit;
+    
+    @Column(name = "PRIX_UNITAIRE")
+    private int prixUnitaire;
 
     public CommandeItem() {
     }
+
+    @Override
+    public String toString() {
+        return "CommandeItem{" + "id=" + id + ", nomProduit=" + nomProduit + ", quantite=" + quantite + ", codeProduit=" + codeProduit + ", prixUnitaire=" + prixUnitaire + '}';
+    }
+    
+    
 }

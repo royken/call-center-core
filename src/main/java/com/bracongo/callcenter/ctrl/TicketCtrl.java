@@ -1,6 +1,7 @@
 package com.bracongo.callcenter.ctrl;
 
 import com.bracongo.callcenter.entities.Ticket;
+import com.bracongo.callcenter.entities.dto.TicketDto;
 import com.bracongo.callcenter.service.ITicketService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +28,14 @@ public class TicketCtrl {
     
     @SuppressWarnings("rawtypes")
     @RequestMapping(method = RequestMethod.POST, value = "/{username}")
-    public ResponseEntity<Ticket> register(@RequestBody Ticket ticket, @PathVariable("username") String username) {
-        Ticket result = ticketService.saveOrUpdateTicket(ticket, username);
+    public ResponseEntity<TicketDto> register(@RequestBody Ticket ticket, @PathVariable("username") String username) {
+        TicketDto result = ticketService.saveOrUpdateTicket(ticket, username);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<Ticket>> getAllConsumers() {
-        List<Ticket> result = ticketService.getAllTicket();
+    public ResponseEntity<List<TicketDto>> getAllConsumers() {
+        List<TicketDto> result = ticketService.getAllTicket();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
     
