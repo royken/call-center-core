@@ -9,6 +9,8 @@ import com.bracongo.callcenter.repository.ICommandeItemRepository;
 import com.bracongo.callcenter.repository.ICommandeRepository;
 import com.bracongo.callcenter.repository.IUtilisateurRepository;
 import com.bracongo.callcenter.service.IcommandeService;
+import com.bracongo.callcenter.service.sms.SmsSender;
+import com.bracongo.callcenter.service.sms.UniqueDestinataireMsgDto;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -58,6 +60,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -110,6 +113,12 @@ public class CommandeServiceImpl implements IcommandeService {
 
     XSSFCellStyle footer;
 
+    @Value("${sms.plateforme}")
+    private String plateforme;
+
+    @Value("${sms.motif.commande}")
+    private String motif;
+
     @Override
     public Commande saveCommande(CommandeDto commande) {
         Utilisateur u = utilisateurRepository.findByUsername(commande.getUsername().trim());
@@ -144,10 +153,22 @@ public class CommandeServiceImpl implements IcommandeService {
             if (commande_ != null) {
                 try {
                     sendEmail(commande);
-                    sendSMS(commande_.getTelSup(), "Nouvelle commande du client " + commande.getClient() + " de " + commande.getQuantite() + " produits, pour " + commande.getPrixTotal() + " FC");
+                    UniqueDestinataireMsgDto msg = new UniqueDestinataireMsgDto();
+                    msg.setMotif(motif);
+                    msg.setPlateforme(plateforme);
+                    msg.setNumeroDestinataire(commande_.getTelSup());
+                    msg.setMessage(buildSmsCommandeSupMsg(commande.getClient(), commande.getQuantite(), commande.getPrixTotal()));
+                    SmsSender.create(msg);
+                    // sendSMS(commande_.getTelSup(), "Nouvelle commande du client " + commande.getClient() + " de " + commande.getQuantite() + " produits, pour " + commande.getPrixTotal() + " FC");
                     String telClient = commande.getNumTelClient().trim();
                     if (telClient != null && telClient.length() >= 9) {
-                        sendSMSToClient(commande_.getNumTelClient().trim(), "Bonjour, votre commande de " + commande.getQuantite() + " produit(s) d'un montant total de " + commande.getPrixTotal() + " FC a bien été enregistrée. Bracongo vous remercie.");
+                        msg = new UniqueDestinataireMsgDto();
+                        msg.setMotif(motif);
+                        msg.setPlateforme(plateforme);
+                        msg.setNumeroDestinataire(commande_.getNumTelClient());
+                        msg.setMessage(buildSmsCommandeClientMsg(commande.getQuantite(), commande.getPrixTotal()));
+                        SmsSender.create(msg);
+                        //sendSMSToClient(commande_.getNumTelClient().trim(), "Bonjour, votre commande de " + commande.getQuantite() + " produit(s) d'un montant total de " + commande.getPrixTotal() + " FC a bien été enregistrée. Bracongo vous remercie.");
                     }
 
                     submitMessage();
@@ -397,7 +418,7 @@ public class CommandeServiceImpl implements IcommandeService {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             workbook.write(bos); // write excel data to a byte array
             fileOut.close();
-            
+
             DataSource fds = new ByteArrayDataSource(bos.toByteArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             MimeMessage message = sender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -572,6 +593,14 @@ public class CommandeServiceImpl implements IcommandeService {
             System.out.println(commande);
         }
         return commandes;
+    }
+
+    private String buildSmsCommandeClientMsg(int qteTotale, int prixTotal) {
+        return "Bonjour, votre commande de " + qteTotale + " produit(s) d'un montant total de " + prixTotal + " FC a bien été enregistrée. Bracongo vous remercie";
+    }
+
+    private String buildSmsCommandeSupMsg(String client, int qteTotale, int prixTotal) {
+        return "Nouvelle commande du client " + client + " de " + qteTotale + " produit(s), pour " + prixTotal + " FC. Consultez votre boite mail pour plus de détails.";
     }
 
 }
